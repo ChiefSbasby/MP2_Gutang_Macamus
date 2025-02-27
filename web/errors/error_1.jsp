@@ -12,6 +12,6 @@
         <title>Login Error!</title>
     </head>
     <body>
-        <h1>Something's wrong, <% out.print(request.getAttribute("error1"));%> </h1>
+        <h1><% out.print(request.getAttribute("error1"));%> </h1>
     </body>
 </html>
