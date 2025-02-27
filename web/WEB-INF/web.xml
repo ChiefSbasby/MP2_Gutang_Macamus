@@ -43,6 +43,14 @@
         <servlet-name>logoutServlet</servlet-name>
         <servlet-class>Servlets.logoutServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>updRecord</servlet-name>
+        <servlet-class>Servlets.updRecord</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>delRecord</servlet-name>
+        <servlet-class>Servlets.delRecord</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>loginServlet</servlet-name>
         <url-pattern>/login/*</url-pattern>
@@ -78,6 +86,14 @@
     <servlet-mapping>
         <servlet-name>logoutServlet</servlet-name>
         <url-pattern>/logoutServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>updRecord</servlet-name>
+        <url-pattern>/updRecord</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>delRecord</servlet-name>
+        <url-pattern>/delRecord</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
