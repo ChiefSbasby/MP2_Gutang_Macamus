@@ -6,27 +6,74 @@
         <title>Update a Record</title>
     </head>
     <body>
-        <form name="updRecord">
+        <form action="updRecord" name="updRecord">
             <fieldset>
                 <legend>Update Existing Record</legend>
                 <label for="addEmail">Email: </label>
-                <input type="text" id="addEmailRecord">
+                <input type="text" name="updEmailRecord" placeholder="Email">
                 <p>*Email required before updating</p>
 
                 <label for="updPassword">Password: </label>
-                <input type="password" id="updPassRecord">
+                <input type="password" name="updPassRecord" placeholder="Password"> <br><br>
                 <label for="confPassword">Confirm Password: </label>
-                <input type="password" id="updConfPassRecord">
-                <button type="button">Update Password</button>
-
+                <input type="password" name="updConfPassRecord" placeholder="Confirm Password"> <br><br>
+                <input type="submit" name="upd" value="Update Password">
+                
+                <br><br>
                 <label for="addRole">Role: </label>
                 <input type="radio" id="updGuest" name="updRole" value="Guest">
                 <label for="updRoleGuest">Guest</label>
                 <input type="radio" id="updAdmin" name="updRole" value="Admin">
-                <label for="updRoleAdmin">Admin</label>
-                <button type="submit">Update Role</button>
+                <label for="updRoleAdmin">Admin</label> <br><br>
+                <input type="submit" name="upd" value="Update Role">
             </fieldset>
         </form>
+        <br>
         <button type="button" onclick="history.back()">Back</button>
     </body>
+    <script>
+        var Msg = '<%=request.getAttribute("getAlert")%>';
+        if (Msg == "notreal"){
+            function alertName(){
+                alert("That user doesn't exist in the database >:(");
+            }
+            window.onload = alertName;
+        }
+        else if (Msg == "congrats"){
+            function alertName(){
+                alert("Password update success :)");
+            }
+            window.onload = alertName;
+        }
+        else if (Msg == "congratsrole"){
+            function alertName(){
+                alert("Role update success :)");
+            }
+            window.onload = alertName;
+        }
+        else if (Msg == "noname"){
+            function alertName(){
+                alert("Input a name first >:(");
+            }
+            window.onload = alertName;
+        }
+        else if (Msg == "notsame"){
+            function alertName(){
+                alert("Confirmation Password and new Password is not the same >:(");
+            }
+            window.onload = alertName;
+        }
+        else if (Msg == "emptypass"){
+            function alertName(){
+                alert("Password is empty >:(");
+            }
+            window.onload = alertName;
+        }
+        else if (Msg == "empty"){
+            function alertName(){
+                alert("Role is empty >:(");
+            }
+            window.onload = alertName;
+        }
+    </script>
 </html>

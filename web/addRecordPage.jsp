@@ -1,19 +1,20 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Add a Record</title>
-    </head>
+    </head> 
     <body>
-        <form name="addRecord">
+        <form action="addRecord" name="addRecord">
             <fieldset>
                 <legend>Add a Record</legend>
                 <label for="addEmail">Email: </label>
-                <input type="text" id="addEmailRecord">
+                <input type="text" name="addEmailRecord" placeholder="Email">
 
                 <label for="addPassword">Password: </label>
-                <input type="password" id="addPassRecord">
+                <input type="password" name="addPassRecord" placeholder="Password">
 
                 <label for="addRole">Role: </label>
                 <input type="radio" id="addGuest" name="addRole" value="Guest">
@@ -25,4 +26,19 @@
         </form>
         <button type="button" onclick="history.back()">Back</button>
     </body>
+    <script>
+        var Msg = '<%=request.getAttribute("getAlert")%>';
+        if (Msg == "samedude"){
+            function alertName(){
+                alert("That user is already in the database >:(");
+            }
+            window.onload = alertName;
+        }
+        else if (Msg == "nuh uh"){
+            function alertName(){
+                    alert("DO NOT leave any fields empty >:(");
+                }
+                window.onload = alertName;
+        }
+    </script>
 </html>

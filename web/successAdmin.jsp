@@ -20,7 +20,7 @@
             <% out.print(getServletContext().getInitParameter("First")); %> <br>      
             <% out.print(getServletContext().getInitParameter("Second"));%>
             </p></header>
-        <p><% out.print("Hola, " + request.getAttribute("role") + " " + request.getAttribute("username") + "!"); %></p>
+        <p><% out.print("Hola, " + session.getAttribute("role") + " " + session.getAttribute("userExists") + "!"); %></p>
         <table>
             <tr styles="border:1px;">
                 <th>USERNAME</th>
@@ -51,4 +51,13 @@
                 <h3>  <% out.print(getServletContext().getInitParameter("MPNumber")); %> </h3>
         </footer>
     </body>
+    <script>
+        var Msg = '<%=request.getAttribute("getAlert")%>';
+        if (Msg == "congrats"){
+            function alertName(){
+                alert("New user added to database :)");
+            }
+            window.onload = alertName;
+        }
+    </script>
 </html>

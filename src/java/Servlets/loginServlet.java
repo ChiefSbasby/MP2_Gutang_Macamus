@@ -79,6 +79,7 @@ public class loginServlet extends HttpServlet {
             String password = request.getParameter("password");
             
             
+                session.setAttribute("userExists",username);
         // Catches completely empty inputs and empty password inputs            - Mico
             if("".equals(username) && ("".equals(password))){
                 throw new NullValueException("");
@@ -121,12 +122,12 @@ public class loginServlet extends HttpServlet {
             
             logCheck = new loginCheck(un, ps, un2, ps2).logCheck();
 
-            
+            // Checks if log check is below 0 to continue                       - Mico
             if (logCheck>0){
                 throw new AuthenticationException(null);
             }
             else {
-                
+                // Table attribute                                              - Mico
                 PreparedStatement passed = con.prepareStatement("SELECT * FROM APP.USER_INFO WHERE USERNAME = ? AND PASSWORD = ?");
                 passed.setString(1, username);
                 passed.setString(2, password);
@@ -136,10 +137,8 @@ public class loginServlet extends HttpServlet {
                     password = rs.getString("PASSWORD");
                     rl = rs.getString("ROLE");
                 }
-                session.setAttribute("userExists",username);
-                request.setAttribute("username",username);
-                request.setAttribute("password",password);
-                request.setAttribute("role",rl);                
+                session.setAttribute("username",username);
+                session.setAttribute("role",rl);                
                 request.setAttribute("tblrone", rsAll);
 
                 if(rl.equals("Guest")){
