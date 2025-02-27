@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+    <listener>
+        <listener-class>Listeners.DateListener</listener-class>
+    </listener>
+    <servlet>
+        <servlet-name>loginServlet</servlet-name>
+        <servlet-class>Servlets.loginServlet</servlet-class>
+        
+        <init-param>
+  		<param-name>jdbcClassName</param-name>
+  		<param-value>org.apache.derby.jdbc.ClientDriver</param-value>
+  	</init-param>
+        
+        <init-param>
+  		<param-name>dbUserName</param-name>
+  		<param-value>app</param-value>
+  	</init-param>
+  	
+  	<init-param>
+  		<param-name>dbPassword</param-name>
+  		<param-value>app</param-value>
+  	</init-param>
+        
+  	<init-param>
+  		<param-name>jdbcDriverURL</param-name>
+  		<param-value>jdbc:derby</param-value>
+  	</init-param>
+  	
+  	<init-param>
+  		<param-name>dbHostName</param-name>
+  		<param-value>localhost</param-value>
+  	</init-param>
+  	
+  	<init-param>
+  		<param-name>dbPort</param-name>
+  		<param-value>1527</param-value>
+  	</init-param>
+  	
+  	<init-param>
+  		<param-name>databaseName</param-name>
+  		<param-value>UserDB</param-value>
+  	</init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>loginServlet</servlet-name>
+        <url-pattern>/login/*</url-pattern>
+    </servlet-mapping>
+    
+    <context-param>
+        <param-name>MPNumber</param-name>
+        <param-value>MP2</param-value>
+    </context-param>
+    <context-param>
+        <param-name>Subject</param-name>
+        <param-value>ICS2609</param-value>
+    </context-param>
+    <context-param>
+        <param-name>Section</param-name>
+        <param-value>2CSB</param-value>
+    </context-param>
+    <context-param>
+        <param-name>First</param-name>
+        <param-value>Gutang, Enrico Miguel</param-value>
+    </context-param>
+    <context-param>
+        <param-name>Second</param-name>
+        <param-value>Macamus, Isabel Anne</param-value>
+    </context-param>
+    
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/errors/error_4.jsp</location>
+    </error-page>
+    <session-config>
+        <session-timeout>
+            5
+        </session-timeout>
+    </session-config>
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+</web-app>
