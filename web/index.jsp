@@ -15,8 +15,10 @@
         
         <h1>Conspicuous DataBase Website</h1>
         <form action="login" method="POST">
-                <input name="username" type="username"/>
-                <input name="password" type="password"/>
+            <label for="email">Email: </label> 
+            <input name="username" type="username"/>
+            <label for="pass">Password: </label>
+            <input name="password" type="password"/>
             <input class="loginbutt" type="submit" value="Log In">
         </form>
     </body>

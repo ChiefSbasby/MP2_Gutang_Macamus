@@ -17,6 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 
 public class loginServlet extends HttpServlet {
@@ -65,7 +66,14 @@ public class loginServlet extends HttpServlet {
         
         // Main login checker try catch clause                                  - Mico
         try{
-
+            
+        // Creates new session                                                  - Sbasby
+        HttpSession session = request.getSession();
+        if (!(session.isNew())) {
+                session.invalidate();
+                session = request.getSession();
+        }
+        
         // Gets user inputs                                                     - Mico
             String username = request.getParameter("username");     
             String password = request.getParameter("password");
@@ -128,6 +136,7 @@ public class loginServlet extends HttpServlet {
                     password = rs.getString("PASSWORD");
                     rl = rs.getString("ROLE");
                 }
+                session.setAttribute("userExists",username);
                 request.setAttribute("username",username);
                 request.setAttribute("password",password);
                 request.setAttribute("role",rl);                
@@ -166,5 +175,5 @@ public class loginServlet extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "Login servlet";
-    }// </editor-fold>
+    }
 }

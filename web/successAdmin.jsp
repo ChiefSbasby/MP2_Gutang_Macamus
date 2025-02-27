@@ -4,9 +4,16 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Admin Homepage</title>
     </head>
     <body>
+        <%
+            //prevents going back to this page after logout
+            response.setHeader("Cache-Control","no-cache,no-store, must-revalidate");
+            if(session.getAttribute("userExists")==null){
+                    response.sendRedirect("index.jsp");
+            }
+        %>
         <header><p>
             <% out.print(getServletContext().getInitParameter("Subject")); %> /   
             <% out.print(getServletContext().getInitParameter("Section")); %>   <br>   
@@ -34,10 +41,11 @@
         
         <button type="button" onclick="window.location='addRecordPage.jsp'">Add a Record</button>
         <button type="button" onclick="window.location='updRecordPage.jsp'">Update a Record</button>
-        <button type="button" onclick="window.location='delRecordPage.jsp'">Delete a Record</button>             
-        <p>ur in the admin page</p>
+        <button type="button" onclick="window.location='delRecordPage.jsp'">Delete a Record</button>  
         
-        <button type="button" action="logoutServlet" method="GET">Logout</button>
+        <form action="logoutServlet" method="GET">
+            <input class="logoutbutt" type="submit" value="Logout">
+        </form>
         <footer>
                 <h3>  <% out.print(getServletContext().getAttribute("date")); %> </h3>
                 <h3>  <% out.print(getServletContext().getInitParameter("MPNumber")); %> </h3>
