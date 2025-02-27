@@ -29,7 +29,7 @@
             </tr>
             <%}%>
         </table>
-        
+        <button type="button">Logout</button>
         <footer>
                 <h3>  <% out.print(getServletContext().getAttribute("date")); %> </h3>
                 <h3>  <% out.print(getServletContext().getInitParameter("MPNumber")); %> </h3>

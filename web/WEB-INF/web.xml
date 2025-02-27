@@ -39,6 +39,10 @@
         <servlet-name>addRecord</servlet-name>
         <servlet-class>Servlets.addRecord</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>logoutServlet</servlet-name>
+        <servlet-class>Servlets.logoutServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>loginServlet</servlet-name>
         <url-pattern>/login/*</url-pattern>
@@ -70,6 +74,10 @@
     <servlet-mapping>
         <servlet-name>addRecord</servlet-name>
         <url-pattern>/addRecord</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>logoutServlet</servlet-name>
+        <url-pattern>/logoutServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
