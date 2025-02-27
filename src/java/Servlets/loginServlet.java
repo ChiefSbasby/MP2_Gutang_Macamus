@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class loginServlet extends HttpServlet {
 
-    private ResultSet rs,  rsAll;
+    private ResultSet rsUser, rsPass,  rs, rsAll;
     private int logCheck;
     Connection con;
     
@@ -65,17 +65,21 @@ public class loginServlet extends HttpServlet {
         
         // Main login checker try catch clause                                  - Mico
         try{
-            String username = request.getParameter("username");     //gets input values from index.jsp
+
+        // Gets user inputs                                                     - Mico
+            String username = request.getParameter("username");     
             String password = request.getParameter("password");
             
             
         // Catches completely empty inputs and empty password inputs            - Mico
-            if("".equals(username)){
-                if ("".equals(password)) {throw new NullValueException("");}
-                if (!"".equals(password)) {response.sendRedirect("errors/error_5.jsp");}
+            if("".equals(username) && ("".equals(password))){
+                throw new NullValueException("");
+            }
+            if("".equals(username) && !("".equals(password))){
+                request.getRequestDispatcher("errors/error_5.jsp").forward(request,response);
             }
             if(!"".equals(username) && "".equals(password)){
-                request.setAttribute("error1","the password is missing!");
+                request.setAttribute("error1","The password is missing!");
                 request.getRequestDispatcher("errors/error_1.jsp").forward(request,response);
                 response.sendRedirect("errors/error_1.jsp");
             }
@@ -83,40 +87,60 @@ public class loginServlet extends HttpServlet {
             // table for login checker                                          - Mico
             PreparedStatement user = con.prepareStatement("SELECT * FROM APP.USER_INFO WHERE USERNAME = ?");
             user.setString(1, username);
-            rs = user.executeQuery();
-            String un = null,ps = null,rl = null;
+            rsUser = user.executeQuery();
+            String un = null,ps = null, rl = null;
 
-            PreparedStatement allUser = con.prepareStatement("SELECT * FROM APP.USER_INFO");
-            rsAll = allUser.executeQuery();     // to get the list of data of all accounts
             
-            while(rs.next()){
-                un = rs.getString("USERNAME");
-                ps = rs.getString("PASSWORD");
-                rl = rs.getString("ROLE");
+            while(rsUser.next()){
+                un = rsUser.getString("USERNAME");
+                ps = rsUser.getString("PASSWORD");
+                rl = rsUser.getString("ROLE");
             }
-            
             
             PreparedStatement pass = con.prepareStatement("SELECT * FROM APP.USER_INFO WHERE PASSWORD = ?");
             pass.setString(1, password);
-            rs = pass.executeQuery();
+            rsPass = pass.executeQuery();
             
-            logCheck = new loginCheck(username,password,un,ps).logCheck();
+            String un2=null,ps2=null;
+            while(rsPass.next()){
+                un2 = rsPass.getString("USERNAME");
+                ps2 = rsPass.getString("PASSWORD");
+            }
+            
+            // to get the list of data of all accounts                          - Sabby
+            PreparedStatement allUser = con.prepareStatement("SELECT * FROM APP.USER_INFO");
+            rsAll = allUser.executeQuery();     
+            
+            logCheck = new loginCheck(un, ps, un2, ps2).logCheck();
 
+            
             if (logCheck>0){
                 throw new AuthenticationException(null);
             }
             else {
-                    request.setAttribute("username",username);
-                    request.setAttribute("password",password);
-                    request.setAttribute("role",rl);                
-                    request.setAttribute("tblrone", rsAll);
+                
+                PreparedStatement passed = con.prepareStatement("SELECT * FROM APP.USER_INFO WHERE USERNAME = ? AND PASSWORD = ?");
+                passed.setString(1, username);
+                passed.setString(2, password);
+                rs = passed.executeQuery();
+                while(rs.next()){
+                    username = rs.getString("USERNAME");
+                    password = rs.getString("PASSWORD");
+                    rl = rs.getString("ROLE");
+                }
+                request.setAttribute("username",username);
+                request.setAttribute("password",password);
+                request.setAttribute("role",rl);                
+                request.setAttribute("tblrone", rsAll);
 
-                    if(rl.equals("Guest")){
-                        request.setAttribute("tblrone", con.prepareStatement("SELECT USERNAME, ROLE FROM APP.USER_INFO").executeQuery());
-                        getServletContext().getRequestDispatcher("/success.jsp").forward(request, response);
-                    }else if(rl.equals("Admin")){
-                        getServletContext().getRequestDispatcher("/successAdmin.jsp").forward(request, response);
-                    }
+                if(rl.equals("Guest")){
+                    request.setAttribute("tblrone", con.prepareStatement("SELECT USERNAME, ROLE FROM APP.USER_INFO").executeQuery());
+                    getServletContext().getRequestDispatcher("/success.jsp").forward(request, response);
+                    response.sendRedirect("/success.jsp");
+                }else if(rl.equals("Admin")){
+                    getServletContext().getRequestDispatcher("/successAdmin.jsp").forward(request, response);
+                    response.sendRedirect("/successAdmin.jsp");
+                }
             }
             
         } catch (NullValueException e){
@@ -126,7 +150,7 @@ public class loginServlet extends HttpServlet {
         } catch (AuthenticationException ex) {
             switch(logCheck) {
                     case 1:     // checks again for null/empty inputs
-                        request.setAttribute("error1","the user is not in our database!");
+                        request.setAttribute("error1","The user is not in our database!");
                         request.getRequestDispatcher("errors/error_1.jsp").forward(request,response);
                         response.sendRedirect("errors/error_1.jsp");
                         break;
@@ -134,13 +158,7 @@ public class loginServlet extends HttpServlet {
                         RequestDispatcher err2 = request.getRequestDispatcher("errors/error_2.jsp");
                         err2.forward(request, response);
                         response.sendRedirect("errors/error_2.jsp");
-                        break;
-                    case 3:     // if both username and password are wrong
-                        RequestDispatcher err3 = request.getRequestDispatcher("errors/error_3.jsp");
-                        err3.forward(request, response);
-                        response.sendRedirect("errors/error_3.jsp");
-                        
-                        break;                       
+                        break;                     
                 }
         }
     }

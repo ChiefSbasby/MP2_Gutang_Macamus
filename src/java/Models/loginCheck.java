@@ -3,27 +3,26 @@ package Models;
 import java.sql.*;
 
 public class loginCheck{
-    String username;
-    String password;
-    String un, ps;
-    public loginCheck(String username, String password, String un, String ps) {
-        this.username = username;
-        this.password = password;
+    String un, ps, un2, ps2;
+    public loginCheck(String un, String ps, String un2, String ps2) {
         this.un = un;
         this.ps = ps;
+        this.un2 = un2;
+        this.ps2 = ps2;
     }
     public int logCheck() throws SQLException, ClassNotFoundException{
-        
-        if(!username.equals(un) && !password.equals(ps)){
-            return 3;
-        }
-        else if(!username.equals(un)){
+        if(un == null){
             return 1;
         }
-        else if(username.equals(un) && !password.equals(ps)){
+        else if(un != null && un2 == null){
             return 2;
         }
-        
-        return -1;
+        else if(un != null && !un.equals(un2)){
+            return 2;
+        }
+        else if(un.equals(un2)){
+            return -1;
+        }
+        return 0;
     }
 }
