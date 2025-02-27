@@ -17,7 +17,6 @@
         <table>
             <tr styles="border:1px;">
                 <th>USERNAME</th>
-                <th>PASSWORD</th> 
                 <th>ROLE</th> 
             </tr>
             <% 
@@ -26,7 +25,6 @@
             %>
             <tr>
             <td><% out.print(rs.getString("USERNAME"));%></td>
-            <td><%out.print(rs.getString("PASSWORD"));%></td>
             <td><%out.print(rs.getString("ROLE"));%></td>
             </tr>
             <%}%>

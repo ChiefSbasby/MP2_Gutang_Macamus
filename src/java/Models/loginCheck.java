@@ -14,12 +14,14 @@ public class loginCheck{
     }
     public int logCheck() throws SQLException, ClassNotFoundException{
         
-        if("".equals(un) || un == null){
-            return 1;
-        }else if(username.equals(un) && !password.equals(ps)){
-            return 2;
-        }else if(!username.equals(un) && !password.equals(ps)){
+        if(!username.equals(un) && !password.equals(ps)){
             return 3;
+        }
+        else if(!username.equals(un)){
+            return 1;
+        }
+        else if(username.equals(un) && !password.equals(ps)){
+            return 2;
         }
         
         return -1;

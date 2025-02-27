@@ -1,5 +1,6 @@
 package Servlets;
 
+import Models.AuthenticationException;
 import Models.NullValueException;
 import Models.loginCheck;
 import java.io.IOException;
@@ -29,7 +30,6 @@ public class loginServlet extends HttpServlet {
         super.init(config);
         try {	
                 Class.forName(config.getInitParameter("jdbcClassName"));
-                //System.out.println("jdbcClassName: " + config.getInitParameter("jdbcClassName"));
                 String username = config.getInitParameter("dbUserName");
                 String password = config.getInitParameter("dbPassword");
                 StringBuffer url = new StringBuffer(config.getInitParameter("jdbcDriverURL"))
@@ -58,7 +58,6 @@ public class loginServlet extends HttpServlet {
             throws ServletException, IOException {
         
     }
-
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -75,120 +74,74 @@ public class loginServlet extends HttpServlet {
                 if ("".equals(password)) {throw new NullValueException("");}
                 if (!"".equals(password)) {response.sendRedirect("errors/error_5.jsp");}
             }
-            if((username != null && password == null) || 
-                    (!"".equals(username) && "".equals(password))){
+            if(!"".equals(username) && "".equals(password)){
+                request.setAttribute("error1","the password is missing!");
+                request.getRequestDispatcher("errors/error_1.jsp").forward(request,response);
                 response.sendRedirect("errors/error_1.jsp");
             }
 
-            // login checker                                                    - Mico
-            PreparedStatement user = con.prepareStatement("SELECT * FROM APP.USER_INFO WHERE USERNAME = ? AND PASSWORD = ?");
+            // table for login checker                                          - Mico
+            PreparedStatement user = con.prepareStatement("SELECT * FROM APP.USER_INFO WHERE USERNAME = ?");
             user.setString(1, username);
-            user.setString(2, password);
             rs = user.executeQuery();
             String un = null,ps = null,rl = null;
 
             PreparedStatement allUser = con.prepareStatement("SELECT * FROM APP.USER_INFO");
-            rsAll = allUser.executeQuery();     // to get the list of accounts
-            
-            /*
-            boolean usernameexists = false;
-            boolean passwordcorrect = false;
-            while(rs.next()){
-                ps = rs.getString("PASSWORD");
-                un = rs.getString("USERNAME");
-                rl = rs.getString("ROLE");
-            usernameexists = true;
-            passwordcorrect = false;
-                if(username.equals(un)){
-                    usernameexists = true;                
-                    if(password.equals(ps)){
-                        passwordcorrect = true;
-                        break;
-                    }
-                    break;
-                }
-            }
-            
-            
-            if (usernameexists == true && passwordcorrect == false) {
-                response.sendRedirect("errors/error_2.jsp");
-            } else if(usernameexists == false && passwordcorrect == false){
-                response.sendRedirect("errors/error_3.jsp");
-            } else if(usernameexists == false) {
-                response.sendRedirect("errors/error_1.jsp");
-            } else if(usernameexists == true && passwordcorrect == true){
-                request.setAttribute("username",username);
-                request.setAttribute("password",password);
-                request.setAttribute("role",rl);                
-                request.setAttribute("tblrone", rsAll);
-                
-                if(rl == "Guest"){
-                    getServletContext().getRequestDispatcher("/success.jsp").forward(request, response);
-                    //response.sendRedirect("success.jsp");
-                }else{
-                    getServletContext().getRequestDispatcher("/successAdmin.jsp").forward(request, response);
-                }
-            }
-            */
-            
+            rsAll = allUser.executeQuery();     // to get the list of data of all accounts
             
             while(rs.next()){
                 un = rs.getString("USERNAME");
                 ps = rs.getString("PASSWORD");
                 rl = rs.getString("ROLE");
-                /*
-                if(username.equals(un) && password.equals(ps)){
+            }
+            
+            
+            PreparedStatement pass = con.prepareStatement("SELECT * FROM APP.USER_INFO WHERE PASSWORD = ?");
+            pass.setString(1, password);
+            rs = pass.executeQuery();
+            
+            logCheck = new loginCheck(username,password,un,ps).logCheck();
+
+            if (logCheck>0){
+                throw new AuthenticationException(null);
+            }
+            else {
                     request.setAttribute("username",username);
                     request.setAttribute("password",password);
                     request.setAttribute("role",rl);                
                     request.setAttribute("tblrone", rsAll);
 
-                    getServletContext().getRequestDispatcher("/success.jsp").forward(request, response);
-                    response.sendRedirect("success.jsp");
-                } else if("".equals(un) || un == null){    // checks again for null/empty inputs
-                    response.sendRedirect("errors/error_1.jsp");
-                } else if(!password.equals(ps) &&  username.equals(un)){  // correct username, wrong password
-                    response.sendRedirect("errors/error_2.jsp");
-                } else {    // wrong username, wrong password
-                    response.sendRedirect("errors/error_3.jsp");
-                } 
-                */
-                
-                logCheck = new loginCheck(username,password,un,ps).logCheck();
-                switch(logCheck) {
-                    case 1:     // checks again for null/empty inputs
-                        RequestDispatcher err1 = request.getRequestDispatcher("errors/error_1.jsp");
-                        err1.forward(request, response);
-                        break;
-                    case 2:     // if only the password is wrong
-                        RequestDispatcher err2 = request.getRequestDispatcher("errors/error_2.jsp");
-                        err2.forward(request, response);
-                        break;
-                    case 3:     // if both username and password are wrong
-                        RequestDispatcher err3 = request.getRequestDispatcher("errors/error_3.jsp");
-                        err3.forward(request, response);
-                        break;
-                    case -1:
-                        request.setAttribute("username",username);
-                        request.setAttribute("password",password);
-                        request.setAttribute("role",rl);                
-                        request.setAttribute("tblrone", rsAll);
-                        
-                        if(rl.equals("Guest")){
-                            getServletContext().getRequestDispatcher("/success.jsp").forward(request, response);
-                        }else if(rl.equals("Admin")){
-                            getServletContext().getRequestDispatcher("/successAdmin.jsp").forward(request, response);
-                        }
-                        break;                        
-                }
+                    if(rl.equals("Guest")){
+                        request.setAttribute("tblrone", con.prepareStatement("SELECT USERNAME, ROLE FROM APP.USER_INFO").executeQuery());
+                        getServletContext().getRequestDispatcher("/success.jsp").forward(request, response);
+                    }else if(rl.equals("Admin")){
+                        getServletContext().getRequestDispatcher("/successAdmin.jsp").forward(request, response);
+                    }
             }
             
         } catch (NullValueException e){
             response.sendRedirect("errors/noLoginCredentials.jsp");
-        } catch (SQLException ex) {
+        } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(loginServlet.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(loginServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (AuthenticationException ex) {
+            switch(logCheck) {
+                    case 1:     // checks again for null/empty inputs
+                        request.setAttribute("error1","the user is not in our database!");
+                        request.getRequestDispatcher("errors/error_1.jsp").forward(request,response);
+                        response.sendRedirect("errors/error_1.jsp");
+                        break;
+                    case 2:     // if only the password is wrong
+                        RequestDispatcher err2 = request.getRequestDispatcher("errors/error_2.jsp");
+                        err2.forward(request, response);
+                        response.sendRedirect("errors/error_2.jsp");
+                        break;
+                    case 3:     // if both username and password are wrong
+                        RequestDispatcher err3 = request.getRequestDispatcher("errors/error_3.jsp");
+                        err3.forward(request, response);
+                        response.sendRedirect("errors/error_3.jsp");
+                        
+                        break;                       
+                }
         }
     }
 

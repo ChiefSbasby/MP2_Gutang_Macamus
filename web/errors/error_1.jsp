@@ -12,6 +12,6 @@
         <title>Login Error!</title>
     </head>
     <body>
-        <h1>The username is either not in the database or the password is blank/incorrect.</h1>
+        <h1>Something's wrong, <% out.print(request.getAttribute("error1"));%> </h1>
     </body>
 </html>
