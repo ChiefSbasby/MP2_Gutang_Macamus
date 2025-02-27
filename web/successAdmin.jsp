@@ -37,7 +37,7 @@
         <button type="button" onclick="window.location='delRecordPage.jsp'">Delete a Record</button>             
         <p>ur in the admin page</p>
         
-        <button type="button">Logout</button>
+        <button type="button" action="logoutServlet" method="GET">Logout</button>
         <footer>
                 <h3>  <% out.print(getServletContext().getAttribute("date")); %> </h3>
                 <h3>  <% out.print(getServletContext().getInitParameter("MPNumber")); %> </h3>
