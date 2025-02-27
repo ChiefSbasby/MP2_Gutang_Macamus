@@ -32,17 +32,53 @@
             <%}%>
         </table>
         
-        <form>
-            
-            <button type="button">Add a Record</button>
+        <form name="addRecord">
+            <fieldset>
+                <legend>Add a Record</legend>
+                <label for="addEmail">Email: </label>
+                <input type="text" id="addEmailRecord">
+
+                <label for="addPassword">Password: </label>
+                <input type="password" id="addPassRecord">
+
+                <label for="addRole">Role: </label>
+                <input type="radio" id="addGuest" name="addRole" value="Guest">
+                <label for="addRoleGuest">Guest</label>
+                <input type="radio" id="addAdmin" name="addRole" value="Admin">
+                <label for="addRoleAdmin">Admin</label>
+                <button type="button">Add Record</button>
+            </fieldset>
         </form>
         
-        <form>
-            <button type="button">Update a Record</button>
+        <form name="updRecord">
+            <fieldset>
+                <legend>Update Existing Record</legend>
+                <label for="addEmail">Email: </label>
+                <input type="text" id="addEmailRecord">
+                <p>*Email required before updating</p>
+
+                <label for="updPassword">Password: </label>
+                <input type="password" id="updPassRecord">
+                <label for="confPassword">Confirm Password: </label>
+                <input type="password" id="updConfPassRecord">
+                <button type="button">Update Password</button>
+
+                <label for="addRole">Role: </label>
+                <input type="radio" id="updGuest" name="updRole" value="Guest">
+                <label for="updRoleGuest">Guest</label>
+                <input type="radio" id="updAdmin" name="updRole" value="Admin">
+                <label for="updRoleAdmin">Admin</label>
+                <button type="button">Update Role</button>
+            </fieldset>
         </form>
         
-        <form> 
-            <button type="button">Delete a Record</button>
+        <form name="delRecord"> 
+            <fieldset>
+                <legend>Delete Existing Record</legend>
+                <label for="delEmail">User Email: </label>
+                <input type="text" id="delEmailRecord">
+                <button type="button">Delete Record</button>
+            </fieldset>
         </form>
         <p>ur in the admin page</p>
         <footer>
