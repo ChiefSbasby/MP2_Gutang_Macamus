@@ -5,7 +5,6 @@
 package Servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -93,8 +92,7 @@ public class delRecord extends HttpServlet {
             rsNew = con.prepareStatement("SELECT * FROM APP.USER_INFO ORDER BY USERNAME").executeQuery();
             session.setAttribute("tblrone",rsNew);
             session.setAttribute("getAlert", "congratsdelete");
-            getServletContext().getRequestDispatcher("/successAdmin.jsp").forward(request, response);
-            response.sendRedirect("successAdmin.jsp");
+            response.sendRedirect("adminTable");
         } catch(SQLException e){
             
         }

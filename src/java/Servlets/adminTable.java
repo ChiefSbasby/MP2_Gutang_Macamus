@@ -1,11 +1,13 @@
 package Servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -45,6 +47,15 @@ public class adminTable extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        try {
+            Statement stmt = con.createStatement();
+            adminTable = stmt.executeQuery("SELECT * FROM APP.USER_INFO");
+            request.setAttribute("adminTable", adminTable);
+            
+            getServletContext().getRequestDispatcher("/successAdmin.jsp").forward(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(guestTable.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override

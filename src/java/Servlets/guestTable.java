@@ -14,12 +14,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 
 public class guestTable extends HttpServlet {
 
-    private ResultSet gstTbl;
+    ResultSet gstTbl;
     Connection con;
     
     @Override
@@ -49,14 +48,13 @@ public class guestTable extends HttpServlet {
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
             response.setContentType("text/html;charset=UTF-8");
+        try {
             Statement stmt = con.createStatement();
             gstTbl = stmt.executeQuery("SELECT USERNAME,ROLE FROM APP.USER_INFO");
             request.setAttribute("guestTable", gstTbl);
             
             getServletContext().getRequestDispatcher("/success.jsp").forward(request, response);
-            response.sendRedirect("/success.jsp");
         } catch (SQLException ex) {
             Logger.getLogger(guestTable.class.getName()).log(Level.SEVERE, null, ex);
         }

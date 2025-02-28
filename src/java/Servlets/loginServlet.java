@@ -134,12 +134,9 @@ public class loginServlet extends HttpServlet {
                 session.setAttribute("role",rl);     
 
                 if(rl.equals("Guest")){
-                    getServletContext().getRequestDispatcher("/guestTable.java").forward(request, response);
-                    response.sendRedirect("/guestTable.java");
+                    response.sendRedirect("guestTable");
                 }else if(rl.equals("Admin")){
-                    // well yes but it should call the servlet for making the table too
-                    getServletContext().getRequestDispatcher("/successAdmin.jsp").forward(request, response);
-                    response.sendRedirect("/successAdmin.jsp");
+                    response.sendRedirect("adminTable");
                 }
             }
             

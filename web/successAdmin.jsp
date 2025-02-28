@@ -28,7 +28,7 @@
                 <th>ROLE</th> 
             </tr>
             <% 
-                ResultSet rs = (ResultSet) session.getAttribute("tblrone");
+                ResultSet rs = (ResultSet) request.getAttribute("adminTable");
                 while(rs.next()){
             %>
             <tr>
@@ -59,7 +59,6 @@
                 alert("New user added to database :)");
             }
             window.onload = alertName;
-            Msg='null';
         }
         else if (Msg == "congratsdelete"){
             function alertName(){
@@ -68,6 +67,5 @@
             window.onload = alertName;
         }
     </script>
-    
-        <% session.setAttribute("getAlert",null);%>
+        <%session.setAttribute("getAlert",null);%>
 </html>

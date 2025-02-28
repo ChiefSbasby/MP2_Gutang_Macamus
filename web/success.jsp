@@ -27,7 +27,7 @@
                 <th>ROLE</th> 
             </tr>
             <% 
-                ResultSet rs = (ResultSet) session.getAttribute("tblrone");
+                ResultSet rs = (ResultSet) request.getAttribute("guestTable");
                 while(rs.next()){
             %>
             <tr>

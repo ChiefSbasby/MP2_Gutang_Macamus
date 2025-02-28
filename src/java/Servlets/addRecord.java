@@ -79,8 +79,7 @@ public class addRecord extends HttpServlet {
             rsNew = con.prepareStatement("SELECT * FROM APP.USER_INFO ORDER BY USERNAME").executeQuery();
             session.setAttribute("getAlert","congrats");
             session.setAttribute("tblrone",rsNew);
-            getServletContext().getRequestDispatcher("/successAdmin.jsp").forward(request, response);
-            response.sendRedirect("successAdmin.jsp");
+            response.sendRedirect("adminTable");
             
         }catch (SQLException e){
             
