@@ -4,11 +4,7 @@ import Models.AuthenticationException;
 import Models.NullValueException;
 import Models.loginCheck;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -22,7 +18,7 @@ import javax.servlet.http.HttpSession;
 
 public class loginServlet extends HttpServlet {
 
-    private ResultSet rsUser, rsPass,  rs, rsAll;
+    private ResultSet rsUser, rsPass,  rs;
     private int logCheck;
     Connection con;
     
@@ -116,10 +112,6 @@ public class loginServlet extends HttpServlet {
                 ps2 = rsPass.getString("PASSWORD");
             }
             
-            // to get the list of data of all accounts                          - Sabby
-            PreparedStatement allUser = con.prepareStatement("SELECT * FROM APP.USER_INFO ORDER BY USERNAME");
-            rsAll = allUser.executeQuery();     
-            
             logCheck = new loginCheck(un, ps, un2, ps2).logCheck();
 
             // Checks if log check is below 0 to continue                       - Mico
@@ -139,14 +131,13 @@ public class loginServlet extends HttpServlet {
                     rl = rs.getString("ROLE");
                 }
                 session.setAttribute("username",username);
-                session.setAttribute("role",rl);                
-                session.setAttribute("tblrone", rsAll);
+                session.setAttribute("role",rl);     
 
                 if(rl.equals("Guest")){
-                    request.setAttribute("tblrone", con.prepareStatement("SELECT USERNAME, ROLE FROM APP.USER_INFO ORDER BY USERNAME").executeQuery());
-                    getServletContext().getRequestDispatcher("/success.jsp").forward(request, response);
-                    response.sendRedirect("/success.jsp");
+                    getServletContext().getRequestDispatcher("/guestTable.java").forward(request, response);
+                    response.sendRedirect("/guestTable.java");
                 }else if(rl.equals("Admin")){
+                    // well yes but it should call the servlet for making the table too
                     getServletContext().getRequestDispatcher("/successAdmin.jsp").forward(request, response);
                     response.sendRedirect("/successAdmin.jsp");
                 }
