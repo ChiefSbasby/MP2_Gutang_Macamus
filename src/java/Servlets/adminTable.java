@@ -49,7 +49,7 @@ public class adminTable extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try {
             Statement stmt = con.createStatement();
-            adminTable = stmt.executeQuery("SELECT * FROM APP.USER_INFO");
+            adminTable = stmt.executeQuery("SELECT * FROM APP.USER_INFO ORDER BY USERNAME, ROLE");
             request.setAttribute("adminTable", adminTable);
             
             getServletContext().getRequestDispatcher("/successAdmin.jsp").forward(request, response);

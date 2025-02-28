@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package Servlets;
 
 import java.io.IOException;
@@ -51,7 +47,7 @@ public class guestTable extends HttpServlet {
             response.setContentType("text/html;charset=UTF-8");
         try {
             Statement stmt = con.createStatement();
-            gstTbl = stmt.executeQuery("SELECT USERNAME,ROLE FROM APP.USER_INFO");
+            gstTbl = stmt.executeQuery("SELECT USERNAME, ROLE FROM APP.USER_INFO ORDER BY USERNAME, ROLE");
             request.setAttribute("guestTable", gstTbl);
             
             getServletContext().getRequestDispatcher("/success.jsp").forward(request, response);

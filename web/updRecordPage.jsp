@@ -29,7 +29,9 @@
             </fieldset>
         </form>
         <br>
-        <button action="back" type="button" onclick="history.back()">Back</button>
+        <form action="adminTable" method="POST">
+            <input class="backbutt" type="submit" value="Back">
+        </form>
     </body>
     <script>
         var Msg = '<%=session.getAttribute("getAlert")%>';
