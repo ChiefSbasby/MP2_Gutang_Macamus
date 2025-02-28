@@ -9,6 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="CSS/login.css"/>
         <title>MP2</title>
     </head>
     <body>
@@ -18,14 +19,17 @@
         session.setAttribute("userExists", null);
         session.invalidate();
         %>
-        
-        <h1>Conspicuous DataBase Website</h1>
-        <form action="login" method="POST">
-            <label for="email">Email: </label> 
-            <input name="username" type="username"/>
-            <label for="pass">Password: </label>
-            <input name="password" type="password"/>
-            <input class="loginbutt" type="submit" value="Log In">
-        </form>
+        <main>
+            <div class="bubblebox">
+                <h1>Conspicuous DataBase Website</h1>
+                <form action="login" method="POST">
+                    <label id="email" for="email">Email: </label> 
+                    <input name="username" type="username"/><br><br>
+                    <label for="pass">Password: </label>
+                    <input name="password" type="password"/><br><br>
+                    <input class="loginbutt" type="submit" value="Log In">
+                </form>
+            </div>
+        </main>
     </body>
 </html>
