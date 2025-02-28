@@ -135,6 +135,14 @@
             <param-value>UserDB</param-value>
         </init-param>
     </servlet>
+    <servlet>
+        <servlet-name>guestTable</servlet-name>
+        <servlet-class>Servlets.guestTable</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>adminTable</servlet-name>
+        <servlet-class>Servlets.adminTable</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>loginServlet</servlet-name>
         <url-pattern>/login/*</url-pattern>
@@ -178,6 +186,14 @@
     <servlet-mapping>
         <servlet-name>delRecord</servlet-name>
         <url-pattern>/delRecord</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>guestTable</servlet-name>
+        <url-pattern>/guestTable</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>adminTable</servlet-name>
+        <url-pattern>/adminTable</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
