@@ -5,7 +5,6 @@
 package Servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -16,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -55,6 +55,7 @@ public class updRecord extends HttpServlet {
         
         // This servlet Updates an existing record                              - Mico
         try  {
+            HttpSession session = request.getSession();
             String userCheck = request.getParameter("updEmailRecord");
             String updPass = request.getParameter("updPassRecord");
             String updRole = request.getParameter("updRole");
@@ -68,12 +69,12 @@ public class updRecord extends HttpServlet {
             }
             
             if ("".equals(userCheck)){
-                request.setAttribute("getAlert","noname");
+                session.setAttribute("getAlert","noname");
                 getServletContext().getRequestDispatcher("/updRecordPage.jsp").forward(request, response);
                 response.sendRedirect("updRecordPage.jsp");
             }
             else if(rectochange == null){
-                request.setAttribute("getAlert","notreal");
+                session.setAttribute("getAlert","notreal");
                 getServletContext().getRequestDispatcher("/updRecordPage.jsp").forward(request, response);
                 response.sendRedirect("updRecordPage.jsp");
             }
@@ -85,26 +86,39 @@ public class updRecord extends HttpServlet {
                             upd.setString(1,updPass);
                             upd.setString(2,userCheck);
                             upd.executeUpdate();
-
-                            request.setAttribute("getAlert","congrats");
+                            
+                            // Changes session password if current user is
+                            // being updated                                    - Mico
+                            if(userCheck.equals(session.getAttribute("username"))){
+                                session.setAttribute("password",updPass);
+                            }
+                            
+                            rsNew = con.prepareStatement("SELECT * FROM APP.USER_INFO ORDER BY USERNAME").executeQuery();
+                            session.setAttribute("tblrone",rsNew);
+                            session.setAttribute("getAlert","congrats");
                             getServletContext().getRequestDispatcher("/updRecordPage.jsp").forward(request, response);
                             response.sendRedirect("updRecordPage.jsp");
                         }
                         else{
-                            request.setAttribute("getAlert","notsame");
+                            session.setAttribute("getAlert","notsame");
                             getServletContext().getRequestDispatcher("/updRecordPage.jsp").forward(request, response);
                             response.sendRedirect("updRecordPage.jsp");
                         }
                     }
                     else{
-                            request.setAttribute("getAlert","emptypass");
+                            session.setAttribute("getAlert","emptypass");
                             getServletContext().getRequestDispatcher("/updRecordPage.jsp").forward(request, response);
                             response.sendRedirect("updRecordPage.jsp");
                     }
                 }
                 else if (request.getParameter("upd").equals("Update Role")){
                     if (updRole==null){
-                        request.setAttribute("getAlert","empty");
+                        session.setAttribute("getAlert","empty");
+                        getServletContext().getRequestDispatcher("/updRecordPage.jsp").forward(request, response);
+                        response.sendRedirect("updRecordPage.jsp");
+                    }
+                    else if(userCheck.equals(session.getAttribute("username"))){
+                        session.setAttribute("getAlert","samedude");
                         getServletContext().getRequestDispatcher("/updRecordPage.jsp").forward(request, response);
                         response.sendRedirect("updRecordPage.jsp");
                     }
@@ -114,7 +128,10 @@ public class updRecord extends HttpServlet {
                         upd.setString(2,userCheck);
                         upd.executeUpdate();
 
-                        request.setAttribute("getAlert","congratsrole");
+                        
+                        rsNew = con.prepareStatement("SELECT * FROM APP.USER_INFO ORDER BY USERNAME").executeQuery();
+                        session.setAttribute("tblrone",rsNew);
+                        session.setAttribute("getAlert","congratsrole");
                         getServletContext().getRequestDispatcher("/updRecordPage.jsp").forward(request, response);
                         response.sendRedirect("updRecordPage.jsp");
                     }

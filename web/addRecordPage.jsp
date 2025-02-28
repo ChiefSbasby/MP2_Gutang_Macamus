@@ -24,10 +24,11 @@
                 <button type="submit">Add Record</button>
             </fieldset>
         </form>
-        <button type="button" onclick="history.back()">Back</button>
+        <button action="back" type="button" onclick="history.back()">Back</button>
     </body>
     <script>
-        var Msg = '<%=request.getAttribute("getAlert")%>';
+        var Msg = '<%=session.getAttribute("getAlert")%>';
+        <%session.setAttribute("getAlert", null);%>
         if (Msg == "samedude"){
             function alertName(){
                 alert("That user is already in the database >:(");

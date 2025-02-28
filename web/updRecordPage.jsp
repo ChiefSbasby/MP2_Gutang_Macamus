@@ -29,10 +29,11 @@
             </fieldset>
         </form>
         <br>
-        <button type="button" onclick="history.back()">Back</button>
+        <button action="back" type="button" onclick="history.back()">Back</button>
     </body>
     <script>
-        var Msg = '<%=request.getAttribute("getAlert")%>';
+        var Msg = '<%=session.getAttribute("getAlert")%>';
+        <%session.setAttribute("getAlert", null);%>
         if (Msg == "notreal"){
             function alertName(){
                 alert("That user doesn't exist in the database >:(");
@@ -48,6 +49,12 @@
         else if (Msg == "congratsrole"){
             function alertName(){
                 alert("Role update success :)");
+            }
+            window.onload = alertName;
+        }
+        else if (Msg == "samedude"){
+            function alertName(){
+                alert("You can't update your own role >:(");
             }
             window.onload = alertName;
         }
@@ -75,5 +82,7 @@
             }
             window.onload = alertName;
         }
+        
+        <%session.setAttribute("getAlert", null);%>
     </script>
 </html>

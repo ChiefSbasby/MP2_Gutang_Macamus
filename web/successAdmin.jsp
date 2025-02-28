@@ -9,7 +9,6 @@
     <body>
         <%
             //prevents going back to this page after logout
-            response.setHeader("Cache-Control","no-cache,no-store, must-revalidate");
             if(session.getAttribute("userExists")==null){
                     response.sendRedirect("index.jsp");
             }
@@ -28,7 +27,7 @@
                 <th>ROLE</th> 
             </tr>
             <% 
-                ResultSet rs = (ResultSet) request.getAttribute("tblrone");
+                ResultSet rs = (ResultSet) session.getAttribute("tblrone");
                 while(rs.next()){
             %>
             <tr>
@@ -43,7 +42,7 @@
         <button type="button" onclick="window.location='updRecordPage.jsp'">Update a Record</button>
         <button type="button" onclick="window.location='delRecordPage.jsp'">Delete a Record</button>  
         
-        <form action="logoutServlet" method="GET">
+        <form action="logoutServlet" method="POST">
             <input class="logoutbutt" type="submit" value="Logout">
         </form>
         <footer>
@@ -52,12 +51,22 @@
         </footer>
     </body>
     <script>
-        var Msg = '<%=request.getAttribute("getAlert")%>';
+        
+        var Msg = '<%=session.getAttribute("getAlert")%>';
         if (Msg == "congrats"){
             function alertName(){
                 alert("New user added to database :)");
             }
             window.onload = alertName;
+            Msg='null';
+        }
+        else if (Msg == "congratsdelete"){
+            function alertName(){
+                alert("Account Deleted. bye bye");
+            }
+            window.onload = alertName;
         }
     </script>
+    
+        <% session.setAttribute("getAlert",null);%>
 </html>

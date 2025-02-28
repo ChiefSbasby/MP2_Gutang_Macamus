@@ -11,20 +11,19 @@ import javax.servlet.http.HttpSession;
 public class logoutServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html");  
         HttpSession session = request.getSession(false);
         if (session != null) {
-            session.removeAttribute("username");
+            session.setAttribute("userExists",null);
+            session.removeAttribute("userExists");
             session.invalidate();
         }
         
         response.setHeader("Cache-Control","no-cache,no-store,must-revalidate");
         response.setHeader("Pragma","no-cache");
         response.sendRedirect("index.jsp"); 
-        PrintWriter out = response.getWriter();
-        out.close();
     }
 
     @Override

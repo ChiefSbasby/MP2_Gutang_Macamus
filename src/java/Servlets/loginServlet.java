@@ -77,9 +77,9 @@ public class loginServlet extends HttpServlet {
         // Gets user inputs                                                     - Mico
             String username = request.getParameter("username");     
             String password = request.getParameter("password");
+            session.setAttribute("userExists",username);
             
             
-                session.setAttribute("userExists",username);
         // Catches completely empty inputs and empty password inputs            - Mico
             if("".equals(username) && ("".equals(password))){
                 throw new NullValueException("");
@@ -117,7 +117,7 @@ public class loginServlet extends HttpServlet {
             }
             
             // to get the list of data of all accounts                          - Sabby
-            PreparedStatement allUser = con.prepareStatement("SELECT * FROM APP.USER_INFO");
+            PreparedStatement allUser = con.prepareStatement("SELECT * FROM APP.USER_INFO ORDER BY USERNAME");
             rsAll = allUser.executeQuery();     
             
             logCheck = new loginCheck(un, ps, un2, ps2).logCheck();
@@ -133,16 +133,17 @@ public class loginServlet extends HttpServlet {
                 passed.setString(2, password);
                 rs = passed.executeQuery();
                 while(rs.next()){
+                    // Sets session password and username
+                    session.setAttribute("password",rs.getString("PASSWORD"));
                     username = rs.getString("USERNAME");
-                    password = rs.getString("PASSWORD");
                     rl = rs.getString("ROLE");
                 }
                 session.setAttribute("username",username);
                 session.setAttribute("role",rl);                
-                request.setAttribute("tblrone", rsAll);
+                session.setAttribute("tblrone", rsAll);
 
                 if(rl.equals("Guest")){
-                    request.setAttribute("tblrone", con.prepareStatement("SELECT USERNAME, ROLE FROM APP.USER_INFO").executeQuery());
+                    request.setAttribute("tblrone", con.prepareStatement("SELECT USERNAME, ROLE FROM APP.USER_INFO ORDER BY USERNAME").executeQuery());
                     getServletContext().getRequestDispatcher("/success.jsp").forward(request, response);
                     response.sendRedirect("/success.jsp");
                 }else if(rl.equals("Admin")){

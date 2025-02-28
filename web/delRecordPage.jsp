@@ -6,14 +6,37 @@
         <title>Delete a Record</title>
     </head>
     <body>
-        <form name="delRecord"> 
+        <form action="delRecord" name="delRecord"> 
             <fieldset>
                 <legend>Delete Existing Record</legend>
                 <label for="delEmail">User Email: </label>
-                <input type="text" id="delEmailRecord">
-                <button type="submit">Delete Record</button>
+                <input name="delEmailRecord" type="text" id="delEmailRecord">
+                <button type="submit" >Delete Record</button>
             </fieldset>
         </form>
-        <button type="button" onclick="history.back()">Back</button>
+        <button action="back" type="button" onclick="history.back()">Back</button>
     </body>
+    <script>
+        var Msg = '<%=session.getAttribute("getAlert")%>';
+        <%session.setAttribute("getAlert", null);%>
+        if (Msg == "currentuser"){
+            function alertName(){
+                alert("You can't delete the account YOU are currently using >:(");
+            }
+            window.onload = alertName;
+        }
+        else if (Msg == "notreal"){
+            function alertName(){
+                alert("User already doesn't exist in the database >:(");
+            }
+            window.onload = alertName;
+        }
+        else if (Msg == "empty"){
+            function alertName(){
+                alert("DO NOT leave any fields empty >:(");
+            }
+            window.onload = alertName;
+        }
+        <%session.setAttribute("getAlert", null);%>
+    </script>
 </html>

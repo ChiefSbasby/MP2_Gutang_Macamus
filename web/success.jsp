@@ -20,14 +20,14 @@
             <% out.print(getServletContext().getInitParameter("First")); %> <br>      
             <% out.print(getServletContext().getInitParameter("Second"));%>
             </p></header>
-        <p><% out.print("Hola, " + request.getAttribute("role") + " " + request.getAttribute("username") + "!"); %></p>
+        <p><% out.print("Hola, " + session.getAttribute("role") + " " + session.getAttribute("username") + "!"); %></p>
         <table>
             <tr styles="border:1px;">
                 <th>USERNAME</th>
                 <th>ROLE</th> 
             </tr>
             <% 
-                ResultSet rs = (ResultSet) request.getAttribute("tblrone");
+                ResultSet rs = (ResultSet) session.getAttribute("tblrone");
                 while(rs.next()){
             %>
             <tr>
@@ -36,7 +36,7 @@
             </tr>
             <%}%>
         </table>
-        <form action="logoutServlet" method="GET">
+        <form action="logoutServlet" method="POST">
             <input class="logoutbutt" type="submit" value="Logout">
         </form>
         <footer>

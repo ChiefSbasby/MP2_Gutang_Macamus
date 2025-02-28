@@ -11,6 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class addRecord extends HttpServlet {
  ResultSet rsCurrent, rsNew;
@@ -45,13 +46,14 @@ public class addRecord extends HttpServlet {
         
         // This Servlet adds a record when conditions are met                   - Mico
         try{
+            HttpSession session = request.getSession();
             String newUser=request.getParameter("addEmailRecord");
             String newPass=request.getParameter("addPassRecord");
             String newRole=request.getParameter("addRole");
             
             // Checks if any input is left empty                                - Mico
             if (newUser == null || newPass == null || newRole == null){
-                request.setAttribute("getAlert","nuh uh");
+                session.setAttribute("getAlert","nuh uh");
                 getServletContext().getRequestDispatcher("/addRecordPage.jsp").forward(request, response);
                 response.sendRedirect("addRecordPage.jsp");
             }
@@ -61,9 +63,8 @@ public class addRecord extends HttpServlet {
             PreparedStatement curr = con.prepareStatement("SELECT * FROM APP.USER_INFO");
             rsCurrent = curr.executeQuery();    
             while(rsCurrent.next()){
-                if(newUser.equals(rsCurrent.getString("USERNAME"))
-                && newRole.equals(rsCurrent.getString("ROLE"))){
-                    request.setAttribute("getAlert","samedude");
+                if(newUser.equals(rsCurrent.getString("USERNAME"))){
+                    session.setAttribute("getAlert","samedude");
                     getServletContext().getRequestDispatcher("/addRecordPage.jsp").forward(request, response);
                     response.sendRedirect("addRecordPage.jsp");
                 }
@@ -75,9 +76,9 @@ public class addRecord extends HttpServlet {
             add.setString(2,newPass);
             add.setString(3,newRole);
             add.executeUpdate();
-            rsNew = con.prepareStatement("SELECT * FROM APP.USER_INFO").executeQuery();
-            request.setAttribute("getAlert","congrats");
-            request.setAttribute("tblrone",rsNew);
+            rsNew = con.prepareStatement("SELECT * FROM APP.USER_INFO ORDER BY USERNAME").executeQuery();
+            session.setAttribute("getAlert","congrats");
+            session.setAttribute("tblrone",rsNew);
             getServletContext().getRequestDispatcher("/successAdmin.jsp").forward(request, response);
             response.sendRedirect("successAdmin.jsp");
             

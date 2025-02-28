@@ -12,6 +12,12 @@
         <title>MP2</title>
     </head>
     <body>
+        <% // invalidates any previous sessions
+        response.setHeader("Cache-Control","no-cache,no-store,must-revalidate");
+        response.setHeader("Pragma","no-cache");
+        session.setAttribute("userExists", null);
+        session.invalidate();
+        %>
         
         <h1>Conspicuous DataBase Website</h1>
         <form action="login" method="POST">
