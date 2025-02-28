@@ -6,6 +6,13 @@
         <title>Delete a Record</title>
     </head>
     <body>
+        <%
+            //prevents going back to this page after logout
+            response.setHeader("Cache-Control","no-cache,no-store, must-revalidate");
+            if(session.getAttribute("userExists")==null){
+                    response.sendRedirect("index.jsp");
+            }
+        %>
         <form action="delRecord" name="delRecord"> 
             <fieldset>
                 <legend>Delete Existing Record</legend>
