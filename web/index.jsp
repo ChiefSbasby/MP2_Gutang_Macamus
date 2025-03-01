@@ -6,9 +6,10 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="CSS/login.css"/>
         <title>MP2</title>
     </head>
@@ -24,9 +25,9 @@
                 <h1>Conspicuous DataBase Website</h1>
                 <form action="login" method="POST">
                     <label id="email" for="email">Email: </label> 
-                    <input name="username" type="username"/><br><br>
+                    <input class="field" name="username" type="username"/><br><br>
                     <label for="pass">Password: </label>
-                    <input name="password" type="password"/><br><br>
+                    <input class="field" name="password" type="password"/><br><br>
                     <input class="loginbutt" type="submit" value="Log In">
                 </form>
             </div>

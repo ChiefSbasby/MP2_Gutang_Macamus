@@ -1,8 +1,10 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="CSS/crud.css"/>
         <title>Delete a Record</title>
     </head>
     <body>
@@ -13,17 +15,29 @@
                     response.sendRedirect("index.jsp");
             }
         %>
-        <form action="delRecord" name="delRecord"> 
-            <fieldset>
-                <legend>Delete Existing Record</legend>
-                <label for="delEmail">User Email: </label>
-                <input name="delEmailRecord" type="text" id="delEmailRecord">
-                <button type="submit" >Delete Record</button>
-            </fieldset>
-        </form>
-        <form action="adminTable" method="POST">
-            <input class="backbutt" type="submit" value="Back">
-        </form>
+        <header><p>
+            <% out.print(getServletContext().getInitParameter("Subject")); %> /   
+            <% out.print(getServletContext().getInitParameter("Section")); %>   
+            <% out.print(getServletContext().getInitParameter("First")); %>     &
+            <% out.print(getServletContext().getInitParameter("Second"));%>
+            </p></header>
+        <div>
+            <form action="delRecord" name="delRecord"> 
+                <fieldset>
+                    <legend>Delete Existing Record</legend>
+                    <label for="delEmail">User Email: </label>
+                    <input class="field" name="delEmailRecord" type="text" id="delEmailRecord"> <br><br>
+                    <button type="submit" >Delete Record</button>
+                </fieldset>
+            </form>
+            <form action="adminTable" method="POST">
+                <input class="backbutt" type="submit" value="Back">
+            </form>
+        </div>
+        <footer>
+                <h3>  <% out.print(getServletContext().getAttribute("date")); %> </h3>
+                <h3>  <% out.print(getServletContext().getInitParameter("MPNumber")); %> </h3>
+        </footer>
     </body>
     <script>
         var Msg = '<%=session.getAttribute("getAlert")%>';
