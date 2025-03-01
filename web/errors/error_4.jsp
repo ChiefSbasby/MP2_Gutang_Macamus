@@ -17,6 +17,7 @@
         <main>
             <div class="bubblebox">
                 <h1>Error 404! Page not found :(</h1>
+                <button onclick="history.back()">Retry</button>
             </div>
         </main>
     </body>
